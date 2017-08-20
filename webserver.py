@@ -39,4 +39,4 @@ SELECT DISTINCT Umidade.valor, Umidade.horario, Dispositivos.localizacao, Dispos
 
     return json.dumps(data)
 
-app.run()
+app.run('0.0.0.0')
