@@ -2,9 +2,8 @@ from flask import Flask, send_file
 import json
 import sqlite3
 
-import random
 
-
+# Criar servidor flask e conexão SQL
 app = Flask(__name__)
 conn = sqlite3.connect('dados.db')
 
@@ -17,8 +16,8 @@ def table_styles():
     return send_file('web/tablestyles.css')
 
 
-
-
+# Callback para update de dados em  tempo real.
+# Buscamos no banco de dado os dados mais recentes de cada dispositivo único.
 @app.route("/update")
 def update():
     cur = conn.cursor()
@@ -39,4 +38,5 @@ SELECT DISTINCT Umidade.valor, Umidade.horario, Dispositivos.localizacao, Dispos
 
     return json.dumps(data)
 
+# Rodar servidor.
 app.run('0.0.0.0')
