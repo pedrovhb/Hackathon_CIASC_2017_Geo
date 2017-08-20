@@ -12,6 +12,9 @@ from machine import ADC, DAC, Pin
 import network
 import time
 
+# LED
+led = Pin(14, Pin.OUT)
+
 # Determinar id do Geo
 id_dispositivo = 4
 
@@ -24,7 +27,8 @@ sta_if.connect(sta_ssid, sta_pwd)
 
 # Esperar conexão
 while not sta_if.isconnected():
-    time.sleep_ms(100)
+    led.value(not led.value())
+    time.sleep_ms(250)
 
 # Conectar-se ao broker MQTT
 c = MQTTClient("geo-1", '13.82.145.247')
@@ -50,4 +54,6 @@ while True:
     # calibração, publicamos os valores brutos lidos.
     c.publish('/monitoramento/geo-{}'.format(id_dispositivo), str(higrometro_leitura.read()))
     time.sleep_ms(periodo_aquisicao)
+    led.value(time.tick_ms()%500>250)
+
 
