@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script
+            src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/web/tablestyles.css">
+
+</head>
+
+<body>
+
+<script>
+
+    setInterval(function () {
+        $.ajax({
+            url: "update",
+            success: function(dados) {atualizarTabela(dados)}
+        })}, 1000);
+
+
+    $.ajax({
+        url: "update",
+        success: function(data) {construirTabela(data);}
+    });
+
+    function atualizarTabela(dados_texto) {
+        var dados = JSON.parse(dados_texto);
+        for (i = 0; i < dados.length; i++) {
+            var $tr = $(".tr_" + dados[i][3]);
+
+            $($tr.find('td')[0]).text(dados[i][2]);
+            $($tr.find('td')[1]).text(dados[i][0]);
+            $($tr.find('td')[2]).text(dados[i][1]);
+
+
+            /*$tr.find('td')[0].text(dados[i][2]);
+            $tr.find('td')[1].text(dados[i][0]);
+            $tr.find('td')[2].text(dados[i][1]);*/
+
+            //console.log($tr);
+
+            $(".dados").append($tr);
+        }
+        console.log('atualizando!');
+    }
+
+    function construirTabela(dados_texto) {
+        var dados = JSON.parse(dados_texto);
+        for (i = 0; i < dados.length; i++) {
+            var $tr = $("<tr>", {"class": "tr_" + dados[i][3]});
+            var $td_localizacao = $("<td>").text(dados[i][2]);
+            var $td_valor = $("<td>").text(dados[i][0]);
+            var $td_horario = $("<td>").text(dados[i][1]);
+            $tr.append($td_localizacao);
+            $tr.append($td_valor);
+            $tr.append($td_horario);
+
+            //console.log($tr);
+
+            $(".dados").append($tr);
+        }
+    }
+
+</script>
+
+
+<table class="heavyTable dados">
+    <tr>
+        <th>Localização</th>
+        <th>Umidade do Solo</th>
+        <th>Horário de Aquisição</th>
+    </tr>
+</table>
+
+</body>
+</html>
